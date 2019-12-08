@@ -6,6 +6,7 @@ from src import utils as u
 
 
 class Bicycle(object):
+
     def __init__(self):
         self.pose = None
         self.v = 0
@@ -13,7 +14,6 @@ class Bicycle(object):
         self.trajectory_x = []
         self.trajectory_y = []
 
-    
     def input(self, pose, v, gamma):
         self.pose = pose
         self.v = v
@@ -24,22 +24,20 @@ class Bicycle(object):
         self.trajectory_y.append(self.pose[1])
         if not SIMULATION:
             if self.v >= 0:
-                picar.run_action('forward')                
+                picar.run_action('forward')
             else:
                 picar.run_action('backward')
             picar_v = u.real_to_picar_v(np.fabs(self.v))
             picar.run_speed(picar_v)
-            
+
             w = self.gamma * G_CALIB
             turnangle = 90 - int(np.round(np.rad2deg(w)))
-            picar.run_action(f'fwturn:{turnangle}')   
-        
-        
+            picar.run_action(f'fwturn:{turnangle}')
+
         self.pose[2] = self.pose[2] + TIMESTEP * self.gamma
         self.pose[0] += TIMESTEP * V_CALIB * self.v * np.cos(self.pose[2])
         self.pose[1] += TIMESTEP * V_CALIB * self.v * np.sin(self.pose[2])
-    
+
     def output(self):
         self.update_step()
         return self.pose
-        

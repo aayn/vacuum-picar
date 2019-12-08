@@ -1,9 +1,10 @@
 """I suck in the dust."""
 
+
 class Vacuum(object):
+
     def input(self):
-        "Suck."
-        ...
-    
+        "Dust."
+
     def output(self):
         print('Sucking in dust...')

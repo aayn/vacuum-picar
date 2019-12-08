@@ -5,6 +5,7 @@ from src import picar
 
 
 class Camera(object):
+
     def input(self):
         """There is no input to the camera module."""
         ...

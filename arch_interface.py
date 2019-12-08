@@ -13,7 +13,7 @@ from bicycle import Bicycle
 from pose_estimator import PosE
 from goal_executive import GoalExec
 from fwd_left import FwdLeft
-from reversey import ReverseY
+from reverse_y import ReverseY
 from terminator import Terminator
 
 
@@ -21,6 +21,7 @@ def plot_trajectory(tx, ty):
     plt.plot(tx, ty)
     # plt.scatter(self.marker_x, self.marker_y, marker='x', c='red', s=50)
     plt.show()
+
 
 def get_qrs(q, camera, qr_decoder):
     """Keeps putting newly detected QR codes into the queue."""
@@ -33,7 +34,7 @@ def get_qrs(q, camera, qr_decoder):
 
 def interface():
     vacuum = Vacuum()
-    q = Queue(maxsize=1)
+    q = Queue(maxsize=2)
     camera = Camera()
     qr_decoder = QRDecoder()
     collide = Collide()
@@ -51,13 +52,17 @@ def interface():
     for _ in range(MAX_ITERS):
         try:
             qrs = q.get(block=False)
-        except queue.Empty:
+            # Distance from boundary
+            bound_dist = min(qr[2] for qr in qrs)
+        except (queue.Empty, TypeError):
             qrs = None
+            bound_dist = None
         # Sucking in dust
         # Comment this line out if you don't want the annoying line printed
         # vacuum.output()
         # Get current pose
         current_pose = pose_est.output()
+        print(current_pose)
         # Check if final destination has been reached
         terminator.input(current_pose)
         if terminator.output():
@@ -67,8 +72,8 @@ def interface():
         # Pass the QR codes to the collide module
         collide.input(qrs)
         # Pass pose to level 1 behaviours
-        fwdleft.input(current_pose)
-        revy.input(current_pose)
+        fwdleft.input(current_pose, bound_dist)
+        revy.input(current_pose, bound_dist)
         # Get goal from the behaviours
         goal_pose = fwdleft.output()
         if goal_pose is None:
@@ -93,9 +98,10 @@ def interface():
         new_lpose = localizer.output()
         # Pass the updated pose to the pose estimator
         pose_est.input(new_bpose, new_lpose)
-    
-    plot_trajectory(bike.trajectory_x, bike.trajectory_y)
+
     p.terminate()
+    plot_trajectory(bike.trajectory_x, bike.trajectory_y)
+
 
 if __name__ == '__main__':
     interface()

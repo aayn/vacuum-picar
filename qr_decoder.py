@@ -5,13 +5,14 @@ from src import utils as u
 
 
 class QRDecoder(object):
+
     def __init__(self):
         self.image = None
 
     def input(self, image):
         """Stores the input image."""
         self.image = image
-    
+
     def get_dist(self, rect):
         return u.fw2d((rect.width + rect.height) / 2)
 
@@ -35,7 +36,7 @@ class QRDecoder(object):
 
     # TODO: @timed
     def output(self):
-        """Returns the decoded QR code."""
+        """Returns the decoded QR code distance, angle and shape."""
         if not SIMULATION:
             contrast = ImageEnhance.Contrast(self.image)
             contrast = contrast.enhance(1.5)

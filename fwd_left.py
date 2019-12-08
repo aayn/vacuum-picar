@@ -1,16 +1,25 @@
 """Module responsible for a very simple, forward-left motion."""
 import numpy as np
-from src.config import FL_X, BEH_TOLERANCE
+from src.config import FL_X, FL_BD, BEH_TOLERANCE
 
 
 class FwdLeft(object):
+    """Class for forward-left behaviour."""
+
     def __init__(self):
         self.pose = None
-    
-    def input(self, pose):
+        self.bound_dist = None
+
+    def input(self, pose, bound_dist=None):
         self.pose = pose
-    
+        self.bound_dist = bound_dist
+
     def output(self):
-        if np.fabs(self.pose[0] - FL_X) < BEH_TOLERANCE:
-            return (2.5, self.pose[1] + 0.25, np.pi/10)
+        if self.bound_dist is None:
+            if self.pose[0] <= FL_X + BEH_TOLERANCE:
+                return (2.5, self.pose[1] + 0.25, np.pi / 10)
+        else:
+            if (self.bound_dist >= FL_BD or
+                    self.pose[0] <= FL_X + BEH_TOLERANCE):
+                return (2.5, self.pose[1] + 0.25, np.pi / 10)
         return None

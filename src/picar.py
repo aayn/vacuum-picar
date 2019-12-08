@@ -2,7 +2,6 @@ import requests
 import http.client
 from src.config import HOST, PORT, SIMULATION
 
-
 BASE_URL = 'http://' + HOST + ':' + PORT + '/'
 
 
@@ -11,7 +10,7 @@ def __request__(url, times=10):
         try:
             requests.get(url)
             return 0
-        except :
+        except:
             print("Connection error, try again")
     print("Abort")
     return -1
@@ -37,8 +36,8 @@ def run_action(cmd):
     global BASE_URL
 
     url = BASE_URL + 'run/?action=' + cmd
-    print('url: %s'% url)
-    # post request with url 
+    print('url: %s' % url)
+    # post request with url
     __request__(url)
 
 
@@ -53,7 +52,7 @@ def run_speed(speed):
     """
     # Set set-speed url
     url = BASE_URL + 'run/?speed=' + str(speed)
-    print('url: %s'% url)
+    print('url: %s' % url)
     # Set speed
     __request__(url)
 
@@ -67,6 +66,7 @@ class QueryImage:
         host, port. Port default 8080, post need to set when creat a new object
 
     """
+
     def __init__(self, host, port=8080, argv="/?action=snapshot"):
         # default port 8080, the same as mjpg-streamer server
         self.host = host
@@ -102,9 +102,11 @@ def reset():
 
 def stopped(f):
     """Wrapper that stops the PiCar before running f."""
+
     def wrapper(*args, **kwargs):
         if not SIMULATION:
             run_action('stop')
         # run_action('fwstraight')
         return f(*args, **kwargs)
+
     return wrapper

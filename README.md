@@ -20,6 +20,14 @@ The architecture is similar to layered subsumption architecture by Rodney Brooks
 4. Levels of competence. My robot has two levels of competence (level 0 and level 1). Though the exact function of my levels are a bit different.
 5. Layers of control/subsumption. Level 1 behaviours subsume the move_around behaviour from level 0.
 
+## Modules Description
+
+1. `camera`: 
+2. `qr_decoder`: Takes in camera images. Decodes detected QR codes to get their distance, angle and shape.
+
+5. `fwd_left`: Takes in current pose and a short-circuited connection from the `qr_decoder` module. Returns a goal in forward (+y) and left direction.
+6. `reverse_y`: Takes in current pose and a short-circuited connection from the `qr_decoder` module. Returns a goal in backward (-y) direction.
+
 # Behaviours
 
-The two key behaviours I have are
+The two key behaviours I have are forward-left and reverse-y.

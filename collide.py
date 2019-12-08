@@ -3,12 +3,13 @@ from src.config import IMMINENT_COLLISION
 
 
 class Collide(object):
+
     def __init__(self):
         self.qrs = None
-    
+
     def input(self, qrs):
         self.qrs = qrs
-    
+
     def output(self):
         # Distance to the closest object
         if self.qrs is not None:
