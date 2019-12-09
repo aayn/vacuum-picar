@@ -17,9 +17,9 @@ class FwdLeft(object):
     def output(self):
         if self.bound_dist is None:
             if self.pose[0] <= FL_X + BEH_TOLERANCE:
-                return (2.5, self.pose[1] + 0.25, np.pi / 10)
+                return (2.25, self.pose[1] + 0.25, np.pi / 12)
         else:
             if (self.bound_dist >= FL_BD or
                     self.pose[0] <= FL_X + BEH_TOLERANCE):
-                return (2.5, self.pose[1] + 0.25, np.pi / 10)
+                return (2.25, self.pose[1] + 0.25, np.pi / 12)
         return None

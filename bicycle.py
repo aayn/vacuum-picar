@@ -31,7 +31,10 @@ class Bicycle(object):
             picar.run_speed(picar_v)
 
             w = self.gamma * G_CALIB
-            turnangle = 90 - int(np.round(np.rad2deg(w)))
+            if self.v >= 0:
+                turnangle = 90 - int(np.round(np.rad2deg(w)))
+            else:
+                turnangle = 90 + int(np.round(np.rad2deg(w)))
             picar.run_action(f'fwturn:{turnangle}')
 
         self.pose[2] = self.pose[2] + TIMESTEP * self.gamma

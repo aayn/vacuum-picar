@@ -72,7 +72,7 @@ class Localizer(object):
         (x, y), error = self.best_fit(qr1_p, qr2_p)
 
         if error > LOC_ERR_TOLERANCE:
-            return self.pose
+            return None 
         return (x, y, self.pose[2])
 
     def output(self):

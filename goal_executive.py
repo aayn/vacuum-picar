@@ -1,7 +1,7 @@
 """Module responsible for moving to a goal pose."""
 import numpy as np
 import src.utils as u
-from src.config import GOAL_TOLERANCE, K_RHO, K_ALPHA, K_BETA, MAX_SPEED
+from src.config import GOAL_TOLERANCE, K_RHO, K_ALPHA, K_BETA, MAX_SPEED, MIN_SPEED
 
 
 class GoalExec(object):
@@ -44,7 +44,7 @@ class GoalExec(object):
 
     def output(self):
         rho, alpha, beta = self.calc_polars()
-        v = min(K_RHO * rho, MAX_SPEED)
+        v = np.clip(K_RHO * rho, MIN_SPEED, MAX_SPEED)
         gamma = K_ALPHA * alpha + K_BETA * beta
         gamma = np.mod(gamma + np.pi, 2 * np.pi) - np.pi
         # print(np.rad2deg(self.gamma))

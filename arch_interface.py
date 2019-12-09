@@ -1,8 +1,9 @@
 """Interfaces all the different modules from the architecture."""
 import matplotlib.pyplot as plt
+import time
 from multiprocessing import Process, Queue
 import queue
-from src.config import MAX_ITERS
+from src.config import MAX_ITERS,START_TIME, SIMULATION
 from vacuum import Vacuum
 from camera import Camera
 from qr_decoder import QRDecoder
@@ -62,7 +63,7 @@ def interface():
         # vacuum.output()
         # Get current pose
         current_pose = pose_est.output()
-        print(current_pose)
+        # print(current_pose)
         # Check if final destination has been reached
         terminator.input(current_pose)
         if terminator.output():
@@ -104,4 +105,6 @@ def interface():
 
 
 if __name__ == '__main__':
+    if not SIMULATION:
+        time.sleep(START_TIME)
     interface()

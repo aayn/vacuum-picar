@@ -22,6 +22,7 @@ class PosE(object):
 
     def update_pose(self):
         if self.l_estimate is not None:
+            print('Localization Correction.')
             b_estimate = (1 - LOC_WEIGHT) * np.array(self.b_estimate)
             l_estimate = LOC_WEIGHT * np.array(self.l_estimate)
             estimate = b_estimate + l_estimate

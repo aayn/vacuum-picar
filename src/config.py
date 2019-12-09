@@ -1,10 +1,11 @@
 # Host and port of the PiCar remote-control server
 HOST = '192.168.7.48'
 PORT = '8000'
+START_TIME = 7
 # Maximum number of iterations to run the robot for
 MAX_ITERS = 5000
 # Whether to run a simulation or the physical robot
-SIMULATION = True
+SIMULATION = False
 # Note: All distances/speed are in meters or meters/s
 # Starting pose in world coordinates
 START_POSE = (0.5, 0.5, 0)
@@ -22,13 +23,13 @@ QR_POS = {
 # How much weight to give to localization correction
 LOC_WEIGHT = 0.5
 # Tolerance beyond which localization updates are rejected
-LOC_ERR_TOLERANCE = 0.25
+LOC_ERR_TOLERANCE = 0.1
 # Duration for which the input is applied
 TIMESTEP = 0.1
 # Calibration multiplier for velocity
-V_CALIB = 1.0
+V_CALIB = 1.1
 # Calibration multiplier for steering angle
-G_CALIB = 0.9
+G_CALIB = 0.75
 # K-values for moving to a pose controller
 K_RHO = 1
 K_ALPHA = 7
@@ -40,9 +41,9 @@ MIN_SPEED = 0.00
 # Vertical line at which the forward-left motion is triggered
 FL_X = 0.5
 # Distance from the boundary at which the forward-left motion is triggered
-FL_BD = 2.5
+FL_BD = 2.25
 # Vertical line at which the reverse-y motion is triggered
-R_X = 2.5
+R_X = 2.25
 # Distance from the boundary at which the reverse motion is triggered
 R_BD = 0.5
 # Tolerance for behaviour trigger
@@ -50,4 +51,4 @@ BEH_TOLERANCE = 0.001
 # Distance for collide module to kick in
 IMMINENT_COLLISION = 0.05
 # Final destination
-END_GOAL = (0.5, 2.5)
+END_GOAL = (0.5, 2.25)
