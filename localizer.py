@@ -7,7 +7,6 @@ from src.config import WHEEL_BASE, QR_POS, LOC_ERR_TOLERANCE
 
 
 class Localizer(object):
-
     def __init__(self):
         self.qrs = None
 
@@ -15,30 +14,15 @@ class Localizer(object):
         self.qrs = qrs
         self.pose = pose
 
-    def estimate_qr_position(self, distance, angle):
-        # TODO: Recheck
-        """Estimate the position of the QR code.
-        
-        rect: QR code bounding rectangle.
-        pose: pose of PiCar.
-        """
-        # Adding WHEEL_BASE to shift from camera to car coordinates
-        rho = distance + WHEEL_BASE
-        theta_ = np.mod(self.pose[2] + angle, 2 * np.pi)
-
-        dx = rho * np.cos(theta_)
-        dy = rho * np.sin(theta_)
-        qx = self.pose[0] + dx
-        qy = self.pose[1] + dy
-
-        return (qx, qy)
-
     def best_fit(self, qr1_p, qr2_p):
+        """Returns position of the car the best fit the observed QR positions."""
         x1, y1 = qr1_p
         x2, y2 = qr2_p
 
         rho1, rho2 = self.qrs[0][2], self.qrs[1][2]
 
+        # Choose x, y such that they minimize the triangulation/trilateration
+        # error.
         f = lambda p: ((p[0] - x1)**2 + (p[1] - y1)**2 - rho1**2 +
                        (p[0] - x2)**2 + (p[1] - y2)**2 - rho2**2)**2
         res = minimize(f, [1, 0], method='L-BFGS-B', tol=1e-12)
@@ -59,6 +43,9 @@ class Localizer(object):
             if error < lowest_error:
                 lowest_error = error
                 best_x, best_y = x, y
+
+        if lowest_error > LOC_ERR_TOLERANCE:
+            return None
         # print(f'Lowest error = {lowest_error}')
         return (best_x, best_y, self.pose[2])
 
@@ -72,7 +59,7 @@ class Localizer(object):
         (x, y), error = self.best_fit(qr1_p, qr2_p)
 
         if error > LOC_ERR_TOLERANCE:
-            return None 
+            return None
         return (x, y, self.pose[2])
 
     def output(self):

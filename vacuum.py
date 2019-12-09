@@ -2,7 +2,6 @@
 
 
 class Vacuum(object):
-
     def input(self):
         "Dust."
 

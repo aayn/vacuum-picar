@@ -1,9 +1,9 @@
+"""Keeps track of the robot's current pose and updates to it."""
 import numpy as np
 from src.config import START_POSE, LOC_WEIGHT
 
 
 class PosE(object):
-
     def __init__(self):
         self.x, self.y, self.theta = START_POSE
         self.b_estimate, self.l_estimate = None, None

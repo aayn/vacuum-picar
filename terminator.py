@@ -4,7 +4,6 @@ from src.config import GOAL_TOLERANCE, END_GOAL
 
 
 class Terminator(object):
-
     def __init__(self):
         self.pose = None
 

@@ -5,7 +5,6 @@ from src.config import GOAL_TOLERANCE, K_RHO, K_ALPHA, K_BETA, MAX_SPEED, MIN_SP
 
 
 class GoalExec(object):
-
     def __init__(self):
         self.current_pose = None
         self.goal_pose = None
@@ -37,8 +36,9 @@ class GoalExec(object):
         alpha = np.mod(
             np.arctan2(delta_y, delta_x) - self.current_pose[2] + np.pi,
             2 * np.pi) - np.pi
-        beta = np.mod(-self.current_pose[2] - alpha + self.goal_pose[2] + np.pi,
-                      2 * np.pi) - np.pi
+        beta = np.mod(
+            -self.current_pose[2] - alpha + self.goal_pose[2] + np.pi,
+            2 * np.pi) - np.pi
 
         return rho, alpha, beta
 

@@ -1,3 +1,4 @@
+"""Decodes camera images to return QR code dimensions."""
 from PIL import ImageEnhance
 from pyzbar.pyzbar import decode
 from src.config import SIMULATION
@@ -5,7 +6,6 @@ from src import utils as u
 
 
 class QRDecoder(object):
-
     def __init__(self):
         self.image = None
 

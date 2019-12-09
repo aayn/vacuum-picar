@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import time
 from multiprocessing import Process, Queue
 import queue
-from src.config import MAX_ITERS,START_TIME, SIMULATION
+from src.config import MAX_ITERS, START_TIME, SIMULATION
 from vacuum import Vacuum
 from camera import Camera
 from qr_decoder import QRDecoder
@@ -18,8 +18,13 @@ from reverse_y import ReverseY
 from terminator import Terminator
 
 
-def plot_trajectory(tx, ty):
-    plt.plot(tx, ty)
+def plot_trajectory(tx, ty, linewidth=5):
+    plt.plot((0, 3), (0.75, 0.75), 'k-', label='Cleaning bound')
+    plt.plot((0, 3), (2.25, 2.25), 'k-')
+    plt.plot((0.5, 0.5), (0.75, 2.25), 'k-')
+    plt.plot((2.25, 2.25), (0.75, 2.25), 'k-')
+    plt.plot(tx, ty, linewidth=linewidth, label='Car Trajectory')
+    plt.legend()
     # plt.scatter(self.marker_x, self.marker_y, marker='x', c='red', s=50)
     plt.show()
 
@@ -48,6 +53,7 @@ def interface():
     goal_exec = GoalExec()
     terminator = Terminator()
 
+    # Start the camera and qr_decoder on another process
     p = Process(target=get_qrs, args=(q, camera, qr_decoder))
     p.start()
     for _ in range(MAX_ITERS):
@@ -59,11 +65,10 @@ def interface():
             qrs = None
             bound_dist = None
         # Sucking in dust
-        # Comment this line out if you don't want the annoying line printed
+        # Uncomment the line below to see the vacuum module in action
         # vacuum.output()
         # Get current pose
         current_pose = pose_est.output()
-        # print(current_pose)
         # Check if final destination has been reached
         terminator.input(current_pose)
         if terminator.output():
@@ -71,8 +76,8 @@ def interface():
         # Pass current pose and QR codes to localizer
         localizer.input(qrs, current_pose)
         # Pass the QR codes to the collide module
-        collide.input(qrs)
-        # Pass pose to level 1 behaviours
+        collide.input(bound_dist)
+        # Pass pose and boundary distance to level 1 behaviours
         fwdleft.input(current_pose, bound_dist)
         revy.input(current_pose, bound_dist)
         # Get goal from the behaviours
@@ -97,11 +102,17 @@ def interface():
         new_bpose = bike.output()
         # Get updated pose from localizer
         new_lpose = localizer.output()
-        # Pass the updated pose to the pose estimator
+        # Pass the updated poses to the pose estimator
         pose_est.input(new_bpose, new_lpose)
 
     p.terminate()
     plot_trajectory(bike.trajectory_x, bike.trajectory_y)
+    if not SIMULATION:
+        max_steering_angle = max(90 - min(bike.turnangles),
+                                 max(bike.turnangles) - 90)
+        print(f'Max steering angle = {max_steering_angle}')
+        with open('turnangles.txt', 'w') as tfile:
+            tfile.writelines(map(lambda a: f'{a}\n', bike.turnangles))
 
 
 if __name__ == '__main__':

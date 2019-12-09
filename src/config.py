@@ -1,3 +1,5 @@
+import numpy as np
+
 # Host and port of the PiCar remote-control server
 HOST = '192.168.7.48'
 PORT = '8000'
@@ -5,7 +7,7 @@ START_TIME = 7
 # Maximum number of iterations to run the robot for
 MAX_ITERS = 5000
 # Whether to run a simulation or the physical robot
-SIMULATION = False
+SIMULATION = True
 # Note: All distances/speed are in meters or meters/s
 # Starting pose in world coordinates
 START_POSE = (0.5, 0.5, 0)
@@ -38,6 +40,10 @@ K_BETA = -3
 # MAX_SPEED = 0.35  # corresponds to 66 PiCar speed
 MAX_SPEED = 0.20  # corresponds to 66 PiCar speed
 MIN_SPEED = 0.00
+# Distance by which the robot moves in the y-direction every interval
+FL_INT = 0.1
+# Goal angle for forward left motion
+FL_G_ANGLE = np.pi / 20
 # Vertical line at which the forward-left motion is triggered
 FL_X = 0.5
 # Distance from the boundary at which the forward-left motion is triggered

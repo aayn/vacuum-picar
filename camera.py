@@ -1,3 +1,4 @@
+"""Captures image from camera and returns it as output."""
 from io import BytesIO
 from PIL import Image
 from src.config import HOST, SIMULATION
@@ -5,7 +6,6 @@ from src import picar
 
 
 class Camera(object):
-
     def input(self):
         """There is no input to the camera module."""
         ...

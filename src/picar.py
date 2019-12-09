@@ -66,7 +66,6 @@ class QueryImage:
         host, port. Port default 8080, post need to set when creat a new object
 
     """
-
     def __init__(self, host, port=8080, argv="/?action=snapshot"):
         # default port 8080, the same as mjpg-streamer server
         self.host = host
@@ -102,7 +101,6 @@ def reset():
 
 def stopped(f):
     """Wrapper that stops the PiCar before running f."""
-
     def wrapper(*args, **kwargs):
         if not SIMULATION:
             run_action('stop')
