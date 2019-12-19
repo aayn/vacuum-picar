@@ -1,9 +1,11 @@
 # Introduction: Vacuum PiCar
 
-I wrote an architecture-first system for the PiCar Vacuum which can "clean" a specific patch of floor with performance guarantees. Some salient features include:
+![Vacuum PiCar](plots/picar_fast.gif)
+
+I wrote an architecture-first system for the Vacuum PiCar which can "clean" a specific patch of floor with performance guarantees. Some salient features include:
 
 1. One-to-one mapping of modules. Each module in the architecture diagram has a corresponding python module. The contents of each module may seem strange at first, but they map nicely onto the architecture and its interface.
-2. (Much) Better localization. I've simplified and improved the localization module. The performance improvement can be clearly seen in the video.
+2. (Much) Better localization. I've simplified and improved the localization module. The performance improvement can be clearly seen in the [video](https://youtu.be/i0YlQgAh9Bc).
 3. Concurrent image processing. It takes ~0.5s to capture images and scan QR codes. This caused issues like the timestep for updating position estimates to be too large. Previously, they were sidestepped inelegantly: scanning every 5-10 timesteps. Now that is done by a separate process (finally!), and the overall system is much smoother as a result.
 4. Better design. Previously, my bicycle model not only dealt with the Kinematics but also calculated the control inputs and a few other things. Similarly, many classes performed moteley tasks. Now, each class/module has only one logical function.
 5. Well-tuned controller. I use the "Moving to a Pose" controller in Peter Corke's [Robotics, Vision and Control textbook](http://petercorke.com/wordpress/books/book). The K-values are pretty well-tuned and the car moves smoothly.
@@ -53,7 +55,7 @@ The interface implementation of the architecture can be seen in [arch_interface.
 
 # Key Behaviours and Operation Manual
 
-The two key behaviours I have are forward-left and reverse-y. Each of them takes in the current pose estimate and distance to the forward boundary. The robot is facing the forward boundary at all times. Ignoring many nuances, the PiCar Vacuum works as follows:
+The two key behaviours I have are forward-left and reverse-y. Each of them takes in the current pose estimate and distance to the forward boundary. The robot is facing the forward boundary at all times. Ignoring many nuances, the Vacuum PiCar works as follows:
 
 ![How to clean a patch of floor](plots/robot_op.png)
 
@@ -70,7 +72,7 @@ The essence of the operation can be summarized by the following state diagram (t
 
 # Demonstration
 
-The video demonstration can be found [here](https://youtu.be/1CVKemUw76E).
+The video demonstration can be found [here](https://youtu.be/i0YlQgAh9Bc).
 
 # Performance Guarantee
 
@@ -90,7 +92,7 @@ In theory and even in practice, I can run the PiCar on a more tightly packed tra
 
 ## Formal performance guarantee statement
 
-The PiCar Vacuum can cover 100% of a rectangular area that has at least 0.5m distance from the forward boundary (see [figure](https://github.com/aayn/vacuum-picar#key-behaviours-and-operation-manual]), 0.25m distance below the start point with no permanent/static obstacles in that area.
+The Vacuum PiCar can cover 100% of a rectangular area that has at least 0.5m distance from the forward boundary (see [figure](https://github.com/aayn/vacuum-picar#key-behaviours-and-operation-manual]), 0.25m distance below the start point with no permanent/static obstacles in that area.
 
 
 ## Advantages of this trajectory

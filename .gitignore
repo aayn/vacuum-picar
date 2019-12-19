@@ -128,4 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# My specific ignores
 src/__pycache__
+.vscode
